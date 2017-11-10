@@ -71,6 +71,7 @@ class App extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     const {router} = this.context;
     const {Auth, location, NavActions, AuthActions, routes} = this.props;
+    // debugger;
     if (
       prevProps.location.pathname != location.pathname ||
       prevProps.Auth.isAuthenticated != Auth.isAuthenticated ||
