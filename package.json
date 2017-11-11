@@ -11,7 +11,7 @@
     "lint": "node ./scripts/tasks/eslint.js",
     "prettier": "node ./scripts/prettier/index.js write-changed",
     "prettier-all": "node ./scripts/prettier/index.js write",
-    "test": "echo \"No unit tests and e2e tests yet\" && exit 0"
+    "test": "jest"
   },
   "version": "0.1.0",
   "license": "MIT",
@@ -58,13 +58,14 @@
   },
   "devDependencies": {
     "babel-core": "^6.1.21",
+    "babel-jest": "^21.2.0",
     "babel-loader": "^6.1.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-es3-member-expression-literals": "^6.1.18",
     "babel-plugin-transform-es3-property-literals": "^6.1.18",
     "babel-polyfill": "^6.13.0",
-    "babel-preset-es2015": "^6.1.18",
-    "babel-preset-react": "^6.1.18",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.1.18",
     "clean-webpack-plugin": "^0.1.9",
     "coffee-loader": "^0.7.2",
@@ -81,11 +82,13 @@
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.26.0",
     "image-maxsize-webpack-loader": "^0.2.0",
+    "jest": "^21.2.1",
     "less": "^2.5.3",
     "less-loader": "^2.2.1",
     "node-sass": "^4.5.2",
     "open-browser-webpack-plugin": "0.0.3",
     "prettier": "^1.5.2",
+    "react-test-renderer": "^16.1.0",
     "redux-logger": "^2.6.1",
     "sass-loader": "^6.0.3",
     "script-loader": "^0.7.0",
@@ -93,5 +96,20 @@
     "url-loader": "^0.5.6",
     "webpack": "^1.15.0",
     "webpack-dev-server": "^1.12.1"
+  },
+  "jest": {
+    "globals": {
+      "__BACKEND_ROOT_URL__": "http://localhost:8000",
+      "__PRODUCTION__":false
+    },
+    "moduleDirectories": [
+      "node_modules", "src"
+    ],
+    "setupFiles": [
+      "./test-setup.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
+     }
   }
 }

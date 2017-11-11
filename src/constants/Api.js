@@ -4,22 +4,24 @@ import * as Cookies from 'js-cookie';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
-
-$.ajaxSetup({
-  beforeSend: function(xhr, settings) {
-    function csrfSafeMethod(method) {
-      // these HTTP methods do not require CSRF protection
-      return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
-    }
-
-    if (!csrfSafeMethod(settings.type)) {
-      xhr.setRequestHeader('X-CSRFToken', Cookies.get('csrftoken'));
-    }
-  },
-  xhrFields: {
-    withCredentials: true,
-  },
-});
+const $ = window.$;
+if ($){
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method);
+      }
+  
+      if (!csrfSafeMethod(settings.type)) {
+        xhr.setRequestHeader('X-CSRFToken', Cookies.get('csrftoken'));
+      }
+    },
+    xhrFields: {
+      withCredentials: true,
+    },
+  });
+}
 
 var BACKEND_PATH =
   __BACKEND_ROOT_URL__ || (__PRODUCTION__ ? '/' : 'http://test.tunga.io/');

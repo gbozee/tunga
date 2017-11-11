@@ -174,7 +174,7 @@ let all_routes = (
           <Route path="complete" component={ProfileType} />
           <Redirect path="*" to="personal" />
         </Route>
-        <Route path="proposal" component={EstimateContainer}>
+        <Route path="" component={EstimateContainer}>
           <IndexRoute component={EstimateList} />
           <Route path="new" component={EstimateForm} />
           <Route path="filter/:filter" component={EstimateList} />
