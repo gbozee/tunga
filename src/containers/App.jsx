@@ -67,52 +67,43 @@ class App extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.verifyRoute(nextProps);
   }
-
+  
   componentDidUpdate(prevProps, prevState) {
     const {router} = this.context;
-    const {Auth, location, NavActions, AuthActions, routes} = this.props;
-    debugger;
-    if (
-      prevProps.location.pathname != location.pathname ||
-      prevProps.Auth.isAuthenticated != Auth.isAuthenticated ||
-      (prevProps.Auth.isVerifying != Auth.isVerifying && !Auth.isVerifying)
-    ) {
+    const {oldComponentDidMountAction,replaceFunc, Auth, location, NavActions, AuthActions, routes } = this.props;
+    const replacer = replaceFunc(router)
+    if (prevProps.location.pathname != location.pathname || prevProps.Auth.isAuthenticated != Auth.isAuthenticated || (prevProps.Auth.isVerifying != Auth.isVerifying && !Auth.isVerifying)) {
       if (requiresNoAuth(routes) && Auth.isAuthenticated) {
         var next = Auth.next;
         if (!next) {
-          next = location.query.next || '/home';
+          next = oldComponentDidMountAction(location, "next") || "/home";
         }
         if (/^\/api\//i.test(next)) {
           window.location.href = next;
         } else {
-          router.replace(next);
+          replacer(next);
         }
         return;
       }
 
-      if (
-        requiresAuthOrEmail(routes) &&
-        !Auth.isAuthenticated &&
-        !Auth.isEmailVisitor
-      ) {
+      if (requiresAuthOrEmail(routes) && !Auth.isAuthenticated && !Auth.isEmailVisitor) {
         AuthActions.authRedirect(location.pathname);
-        router.replace('/signin?next=' + location.pathname);
+        replacer("/signin?next=" + location.pathname);
         return;
       }
 
       if (requiresAuth(routes) && !Auth.isAuthenticated) {
         AuthActions.authRedirect(location.pathname);
-        router.replace('/signin?next=' + location.pathname);
+        replacer("/signin?next=" + location.pathname);
         return;
       }
     }
-
     if (
       Auth.isAuthenticated &&
       !Auth.user.type &&
       !PROFILE_COMPLETE_PATH.test(location.pathname)
     ) {
-      router.replace('/profile/complete?next=' + location.pathname);
+      replacer('/profile/complete?next=' + location.pathname);
       return;
     }
 
@@ -121,7 +112,7 @@ class App extends React.Component {
       Auth.user.type &&
       PROFILE_COMPLETE_PATH.test(location.pathname)
     ) {
-      router.replace('/home?next=' + location.pathname);
+      replacer('/home?next=' + location.pathname);
       return;
     }
 
@@ -130,7 +121,7 @@ class App extends React.Component {
       !Auth.isAuthenticating &&
       Auth.isEmailVisitor
     ) {
-      router.replace('/people/');
+      replacer('/people/');
     }
 
     if (prevProps.location.pathname != location.pathname) {

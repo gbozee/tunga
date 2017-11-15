@@ -32,7 +32,6 @@ export function getRouteParamValues(keys, routes) {
     if (!Array.isArray(keys)) {
       targetKeys = [keys];
     }
-
     targetKeys.forEach(function(key) {
       paramValues = paramValues.concat(
         routes.map(function(route) {

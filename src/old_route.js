@@ -10,11 +10,12 @@ import React from "react";
 import {
   Router,
   Route,
+  Link,
   IndexRoute,
   IndexRedirect,
   Redirect
 } from "react-router";
-
+import history from "./history";
 import App from "containers/App";
 import AppWrapper from "containers/AppWrapper";
 import LandingPage from "routes/LandingPage";
@@ -91,6 +92,16 @@ import MultiTaskPayProcessing from "components/MultiTaskPayProcessing";
 import QuizForm from "components/QuizForm";
 import DeveloperProfile from "components/DeveloperProfile";
 
+const NewAppWrapper = props => (
+  <AppWrapper
+    queryFunc={(obj, value) => {
+      return obj.query[value];
+    }}
+    replaceFunc={router => router.replace}
+    {...props}
+    linkComponent={Link}
+  />
+);
 let all_routes = (
   <Route>
     <IndexRoute component={LandingPage} unauthedOnly={true} />
@@ -154,7 +165,7 @@ let all_routes = (
       {/* End of No Auth Pages */}
     </Route>
 
-    <Route component={AppWrapper} authedOrEmailOnly={true}>
+    <Route component={NewAppWrapper} authedOrEmailOnly={true}>
       {/* Auth or Email Only Pages */}
       <Route authedOnly={true}>
         {/* Auth Only Pages */}
@@ -360,12 +371,24 @@ let all_routes = (
     <Redirect path="*" to="home" />
   </Route>
 );
-export default ({ history }) =>
-  <Router history={history}>
-    <Route path="/" component={App}>
-      <Route path="tunga">
+const App2 = props => (
+  <App
+    replaceFunc={router => router.replace}
+    oldComponentDidMountAction={(obj, value) => {
+      return obj.query[value];
+    }}
+    {...props}
+  />
+);
+export default ({ listeningFunction }) => {
+  history.listen(listeningFunction);
+
+  return (
+    <Router history={history}>
+      <Route path="/" component={App2}>
+        <Route path="tunga">{all_routes}</Route>
         {all_routes}
       </Route>
-      {all_routes}
-    </Route>
-  </Router>;
+    </Router>
+  );
+};

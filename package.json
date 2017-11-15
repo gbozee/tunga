@@ -86,8 +86,10 @@
     "less": "^2.5.3",
     "less-loader": "^2.2.1",
     "node-sass": "^4.5.2",
+    "npm": "^5.5.1",
     "open-browser-webpack-plugin": "0.0.3",
     "prettier": "^1.5.2",
+    "query-string": "^5.0.1",
     "react-test-renderer": "^16.1.0",
     "redux-logger": "^2.6.1",
     "sass-loader": "^6.0.3",
@@ -100,16 +102,17 @@
   "jest": {
     "globals": {
       "__BACKEND_ROOT_URL__": "http://localhost:8000",
-      "__PRODUCTION__":false
+      "__PRODUCTION__": false
     },
     "moduleDirectories": [
-      "node_modules", "src"
+      "node_modules",
+      "src"
     ],
     "setupFiles": [
       "./test-setup.js"
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js"
-     }
+    }
   }
 }

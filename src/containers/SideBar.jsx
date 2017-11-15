@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -45,6 +44,7 @@ class SideBar extends React.Component {
   }
 
   render() {
+    const Link = this.props.linkComponent;
     const {Notification, Support} = this.props;
     const messages = Notification.notifications
       ? Notification.notifications.messages
